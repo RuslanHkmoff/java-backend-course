@@ -1,12 +1,11 @@
-package command;
+package edu.command;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import edu.java.bot.model.User;
-import edu.java.bot.model.command.ListCommand;
+import edu.java.bot.model.command.TrackCommand;
 import edu.java.bot.repository.UserRepository;
-import java.net.URI;
 import java.util.HashSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,11 +14,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ListCommandTest {
+public class TrackCommandTest {
     private UserRepository userRepository;
     private Update update;
     private Message message;
     private Chat chat;
+    private TrackCommand command;
 
     @BeforeEach
     void init() {
@@ -27,49 +27,54 @@ public class ListCommandTest {
         update = mock(Update.class);
         message = mock(Message.class);
         chat = mock(Chat.class);
+        command = new TrackCommand(userRepository);
     }
 
     @Test
-    @DisplayName("test list command: command, description")
-    void testBaseList() {
-        ListCommand command = new ListCommand(userRepository);
-        String name = "/list";
-        String description = "Returns a list of tracked links";
+    @DisplayName("test track command: command, description")
+    void testBaseTrack() {
+        String name = "/track";
+        String description = "Used for start tracking link";
         assertThat(command.command()).isEqualTo(name);
         assertThat(command.description()).isEqualTo(description);
     }
 
     @Test
-    @DisplayName("test list: valid command")
-    void testListValidCommand() {
-        HashSet<URI> links = new HashSet<>();
-        links.add(URI.create("Link1"));
-        links.add(URI.create("Link2"));
-        userRepository.save(new User(1L, links));
-        ListCommand command = new ListCommand(userRepository);
+    @DisplayName("test track: valid command")
+    void testTrackValidCommand() {
+        userRepository.save(new User(1L, new HashSet<>()));
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
-        when(message.text()).thenReturn("/list");
+        when(message.text()).thenReturn("/track link");
         when(chat.id()).thenReturn(1L);
 
-        String expected = """
-            Tracking links:
-            Link1
-            Link2
-            """.replace("\n", System.lineSeparator());
+        String expected = "Link successfully tracking";
         assertThat(command.handle(update)).isEqualTo(expected);
     }
 
     @Test
-    @DisplayName("test List: unregistered user")
-    void testTrackUnregisteredUser() {
-        ListCommand command = new ListCommand(userRepository);
+    @DisplayName("test track: invalid command")
+    void testTrackInvalidCommand() {
+        userRepository.save(new User(1L, new HashSet<>()));
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
-        when(message.text()).thenReturn("/list");
+        when(message.text()).thenReturn("/track");
+        when(chat.id()).thenReturn(1L);
+
+        String expected = "A link must be provided";
+        assertThat(command.handle(update)).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("test track: unregistered user")
+    void testTrackUnregisteredUser() {
+        when(update.message()).thenReturn(message);
+        when(message.chat()).thenReturn(chat);
+        when(message.text()).thenReturn("/track link");
         when(chat.id()).thenReturn(1L);
 
         String expected = "You need to be registered";
         assertThat(command.handle(update)).isEqualTo(expected);
     }
+
 }

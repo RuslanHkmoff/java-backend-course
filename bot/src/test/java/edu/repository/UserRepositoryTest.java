@@ -1,4 +1,4 @@
-package repository;
+package edu.repository;
 
 import edu.java.bot.model.User;
 import edu.java.bot.repository.UserRepository;
