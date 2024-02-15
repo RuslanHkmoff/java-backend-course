@@ -1,4 +1,4 @@
-package hw1.service;
+package service;
 
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Chat;

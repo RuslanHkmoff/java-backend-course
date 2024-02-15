@@ -1,4 +1,4 @@
-package hw1.repository;
+package repository;
 
 import edu.java.bot.model.User;
 import edu.java.bot.repository.UserRepository;
