@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Component
 public class User {
     private Long id;
     private Set<URI> links;
