@@ -14,23 +14,25 @@ import edu.java.bot.service.LinkTrackerBotService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class LinkTrackerBotServiceTest {
-    private Update update;
-    private Message message;
-    private Chat chat;
     private LinkTrackerBotService service;
-    private BotCommand[] botCommands;
+    @Mock
+    private Update update;
+    @Mock
+    private Message message;
+    @Mock
+    private Chat chat;
 
     @BeforeEach
     void init() {
-        update = mock(Update.class);
-        message = mock(Message.class);
-        chat = mock(Chat.class);
+        MockitoAnnotations.openMocks(this);
         UserRepository userRepository = new UserRepository();
         List<Command> commands = List.of(
             new StartCommand(userRepository),
@@ -39,8 +41,6 @@ public class LinkTrackerBotServiceTest {
             new ListCommand(userRepository)
         );
         service = new LinkTrackerBotService(commands);
-        botCommands = commands.stream().map(Command::toApiCommand).toList().toArray(new BotCommand[0]);
-
     }
 
     @Test
