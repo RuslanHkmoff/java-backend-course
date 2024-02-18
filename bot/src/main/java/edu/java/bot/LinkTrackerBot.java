@@ -42,13 +42,15 @@ public class LinkTrackerBot implements Bot {
                 bot.execute(botService.handleUpdate(update), new Callback<SendMessage, SendResponse>() {
                     @Override
                     public void onResponse(SendMessage request, SendResponse response) {
-                        LOGGER.info("Sending response on request, message: "
-                            + response.message().text());
+                        LOGGER.info(
+                            "Sending response on request, message: {}",
+                            response.message().text()
+                        );
                     }
 
                     @Override
                     public void onFailure(SendMessage request, IOException e) {
-                        LOGGER.info("Exception while process request: " + e.getMessage());
+                        LOGGER.info("Exception while process request: {}", e.getMessage());
                     }
                 });
             }
