@@ -4,9 +4,9 @@ import edu.java.bot.model.User;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
+@Service
 public class UserRepository {
     private final Map<Long, User> map = new HashMap<>();
 
