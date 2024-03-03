@@ -1,15 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>models</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
+
+    <name>models</name>
+
     <parent>
         <groupId>edu.java</groupId>
         <artifactId>root</artifactId>
         <version>0.1</version>
     </parent>
-    <groupId>org.example</groupId>
-    <artifactId>models</artifactId>
-    <name>Archetype - models</name>
-    <url>http://maven.apache.org</url>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
         <dependency>
