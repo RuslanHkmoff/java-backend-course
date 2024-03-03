@@ -1,4 +1,4 @@
-package edu.java.bot.exception;
+package edu.java.bot.excpetion;
 
 import edu.java.models.response.ApiErrorResponse;
 import jakarta.validation.ConstraintViolationException;

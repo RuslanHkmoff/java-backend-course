@@ -137,9 +137,10 @@
 
         <!-- Shared Dto -->
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>edu.java</groupId>
             <artifactId>models</artifactId>
             <version>0.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
