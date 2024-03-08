@@ -1,4 +1,4 @@
-package edu.java.bot.excpetion;
+package edu.java.bot.exception;
 
 import edu.java.models.response.ApiErrorResponse;
 import jakarta.validation.ConstraintViolationException;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionHandlerController {
+public class BotExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorResponse> invalidArgumentHandle(ConstraintViolationException ex) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;

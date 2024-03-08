@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionHandlerController {
+public class ScrapperExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiErrorResponse> invalidArgumentHandle(ConstraintViolationException ex) {
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
