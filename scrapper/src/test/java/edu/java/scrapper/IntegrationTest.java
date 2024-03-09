@@ -1,5 +1,16 @@
 package edu.java.scrapper;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.sql.SQLException;
+import liquibase.Contexts;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.exception.LiquibaseException;
+import liquibase.resource.DirectoryResourceAccessor;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.JdbcDatabaseContainer;
@@ -21,7 +32,28 @@ public abstract class IntegrationTest {
     }
 
     private static void runMigrations(JdbcDatabaseContainer<?> c) {
-        // ...
+        Path changelogPath = new File(".")
+            .toPath()
+            .toAbsolutePath()
+            .getParent()
+            .getParent()
+            .resolve("migrations");
+        try (Database db = DatabaseFactory
+            .getInstance()
+            .findCorrectDatabaseImplementation(
+                new JdbcConnection(
+                    c.createConnection("")
+                )
+            )) {
+            Liquibase liquibase = new Liquibase(
+                "master.xml",
+                new DirectoryResourceAccessor(changelogPath),
+                db
+            );
+            liquibase.update(new Contexts());
+        } catch (SQLException | FileNotFoundException | LiquibaseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @DynamicPropertySource
