@@ -5,35 +5,46 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Slf4j
 public class DataBaseTest extends IntegrationTest {
     private static final String EXISTS_QUERY =
         "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = '%s')";
+    private static final String INVALID_QUERY = "SELECT * FROM table_not_exists";
 
     @Test
     @DisplayName("test link table exists")
     void testLinkTableExists() {
-        simpleTest(String.format(EXISTS_QUERY, "link"));
+
+        assertDoesNotThrow(() -> simpleTest(String.format(EXISTS_QUERY, "link")));
     }
 
     @Test
     @DisplayName("test chat table exists")
     void testChatTableExists() {
-        simpleTest(String.format(EXISTS_QUERY, "chat"));
+        assertDoesNotThrow(() -> simpleTest(String.format(EXISTS_QUERY, "chat")));
     }
 
     @Test
     @DisplayName("test subscriptions table exists")
     void testSubscriptionsTableExists() {
-        simpleTest(String.format(EXISTS_QUERY, "subscriptions"));
+        assertDoesNotThrow(() -> simpleTest(String.format(EXISTS_QUERY, "subscriptions")));
     }
 
-    private void simpleTest(String sqlQuery) {
+    @Test
+    @DisplayName("test failed")
+    void testFailed() {
+        assertThrows(
+            SQLException.class,
+            () -> simpleTest(INVALID_QUERY)
+        );
+    }
+
+    private void simpleTest(String sqlQuery) throws SQLException {
         try (Connection connection = DriverManager.getConnection(
             POSTGRES.getJdbcUrl(),
             POSTGRES.getUsername(),
@@ -43,8 +54,6 @@ public class DataBaseTest extends IntegrationTest {
                 ResultSet resultSet = statement.executeQuery(sqlQuery);
                 assertTrue(resultSet.next() && resultSet.getBoolean(1));
             }
-        } catch (SQLException e) {
-            log.error("test failed: {}", e.getMessage());
         }
     }
 }
