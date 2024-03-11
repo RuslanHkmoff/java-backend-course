@@ -18,6 +18,6 @@ public record ApplicationConfig(
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 
-    public record BaseUrl(@NotNull String github, @NotNull String stackoverflow) {
+    public record BaseUrl(@NotNull String github, @NotNull String stackoverflow, @NotNull String bot) {
     }
 }

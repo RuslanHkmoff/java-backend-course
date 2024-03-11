@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>models</artifactId>
+    <version>0.1</version>
+    <packaging>jar</packaging>
+
+    <name>models</name>
+
+    <parent>
+        <groupId>edu.java</groupId>
+        <artifactId>root</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.1.0-M1</version>
+        </dependency>
+    </dependencies>
+</project>

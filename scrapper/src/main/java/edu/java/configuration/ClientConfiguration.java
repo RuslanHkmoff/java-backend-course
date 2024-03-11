@@ -25,4 +25,12 @@ public class ClientConfiguration {
             .baseUrl(config.baseUrl().stackoverflow())
             .build();
     }
+
+    @Bean
+    WebClient botClient() {
+        return WebClient
+            .builder()
+            .baseUrl(config.baseUrl().bot())
+            .build();
+    }
 }

@@ -6,6 +6,7 @@ app:
   base-url:
     github: https://api.github.com/repos/
     stackoverflow: https://api.stackexchange.com/2.3/questions/
+    bot: http://localhost:8090
 
 spring:
   application:
@@ -16,3 +17,7 @@ server:
 
 logging:
   config: classpath:log4j2-plain.xml
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
