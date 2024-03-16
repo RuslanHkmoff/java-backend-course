@@ -5,7 +5,7 @@ import edu.java.ScrapperApplication;
 import edu.java.response.stackoverflow.StackOverflowResponse;
 import edu.java.response.stackoverflow.QuestionResponse;
 import edu.java.response.stackoverflow.StackOverflowOwner;
-import edu.java.service.StackOverflowService;
+import edu.java.service.client.StackOverflowService;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
