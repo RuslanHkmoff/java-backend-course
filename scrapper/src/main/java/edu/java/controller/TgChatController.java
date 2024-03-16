@@ -1,11 +1,13 @@
 package edu.java.controller;
 
 import edu.java.models.response.ApiErrorResponse;
+import edu.java.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Validated
 @Slf4j
+@RequiredArgsConstructor
 public class TgChatController {
+    private final ChatService chatService;
+
     @Operation(
         operationId = "tgChatIdDelete",
         summary = "Удалить чат",
@@ -34,7 +39,7 @@ public class TgChatController {
     @DeleteMapping(value = "/tg-chat/{id}", produces = "application/json")
     public void deleteChat(@PathVariable @Positive Long id) {
         log.info("Remove chat, with id: {}", id);
-        //TODO: chatService.remove(id)
+        chatService.unregister(id);
     }
 
     @Operation(
@@ -50,6 +55,6 @@ public class TgChatController {
     @PostMapping(value = "/tg-chat/{id}", produces = "application/json")
     public void registerChat(@PathVariable @Positive Long id) {
         log.info("Register chat, with id: {}", id);
-        //TODO: chatService.save(id)
+        chatService.register(id);
     }
 }

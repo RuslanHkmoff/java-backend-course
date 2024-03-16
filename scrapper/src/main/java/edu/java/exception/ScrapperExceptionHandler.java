@@ -50,4 +50,32 @@ public class ScrapperExceptionHandler {
                 )
             );
     }
+
+    @ExceptionHandler(LinkDoesntExistsException.class)
+    public ResponseEntity<ApiErrorResponse> linkDoesntExists(LinkDoesntExistsException ex) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        return ResponseEntity
+            .status(badRequest)
+            .body(
+                ApiErrorResponse.buildResponse(
+                    "Link not exists",
+                    badRequest.toString(),
+                    ex
+                )
+            );
+    }
+
+    @ExceptionHandler(ChatDoesntExistsException.class)
+    public ResponseEntity<ApiErrorResponse> chatDoesntExists(ChatDoesntExistsException ex) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        return ResponseEntity
+            .status(badRequest)
+            .body(
+                ApiErrorResponse.buildResponse(
+                    "Chat not exists",
+                    badRequest.toString(),
+                    ex
+                )
+            );
+    }
 }
