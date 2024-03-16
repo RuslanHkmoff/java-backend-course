@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.test.annotation.Rollback;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,6 +31,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Rollback
     void addTest() {
         Link link = new Link();
         URI url = URI.create("uri/test");
@@ -39,6 +41,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Rollback
     void findByUrlTest() {
         Link link = new Link();
         URI url = URI.create("uri/test");
@@ -48,6 +51,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Rollback
     void removeTest() {
         URI url = URI.create("uri/test");
         Long id = jdbcLinkRepository.findByUrl(url).get().getId();

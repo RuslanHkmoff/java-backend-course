@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.test.annotation.Rollback;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,15 +32,17 @@ public class JdbcSubscriptionRepositoryTest extends IntegrationTest {
         JdbcChatRepository jdbcChatRepository = new JdbcChatRepository(new JdbcTemplate(dataSource));
         JdbcLinkRepository jdbcLinkRepository = new JdbcLinkRepository(new JdbcTemplate(dataSource));
         jdbcChatRepository.add(Chat.builder().id(CHAT_ID).build());
-        link = jdbcLinkRepository.add(Link.builder().url(URI.create("uri/test")).build());
+        link = jdbcLinkRepository.add(Link.builder().url(URI.create("uri/test2")).build());
     }
 
     @Test
+    @Rollback
     void addLinkToChatTest() {
         assertDoesNotThrow(() -> jdbcSubscriptionRepository.addLinkToChat(CHAT_ID, link.getId()));
     }
 
     @Test
+    @Rollback
     void findLinksByChatTest() {
         jdbcSubscriptionRepository.addLinkToChat(CHAT_ID, link.getId());
         List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(CHAT_ID);
@@ -48,6 +51,7 @@ public class JdbcSubscriptionRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Rollback
     void removeLinkFromChatTest() {
         assertDoesNotThrow(() -> jdbcSubscriptionRepository.removeLinkFromChat(CHAT_ID, link.getId()));
         List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(CHAT_ID);

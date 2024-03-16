@@ -28,6 +28,7 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Rollback
     void addTest() {
         Chat chat = new Chat(1234L, OffsetDateTime.now());
         assertDoesNotThrow(() -> jdbcChatRepository.add(chat));
@@ -37,7 +38,6 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     }
 
     @Test
-    @Transactional
     @Rollback
     void removeTest() {
         Chat chat = new Chat(1235L, OffsetDateTime.now());
