@@ -2,7 +2,7 @@ app:
   scheduler:
     enable: true
     interval: 10s
-    force-check-delay: 10s
+    force-check-delay: 600s
   base-url:
     github: https://api.github.com/repos/
     stackoverflow: https://api.stackexchange.com/2.3/questions/
@@ -13,6 +13,13 @@ spring:
     name: scrapper
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5437/scrapper
+    username: postgres
+    password: postgres
+  liquibase:
+    enabled: false
 server:
   port: 8080
 
