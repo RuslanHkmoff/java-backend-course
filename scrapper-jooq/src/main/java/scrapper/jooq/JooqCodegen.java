@@ -9,6 +9,10 @@ import org.jooq.meta.jaxb.Jdbc;
 import org.jooq.meta.jaxb.Target;
 
 public class JooqCodegen {
+    private JooqCodegen() {
+    }
+
+    @SuppressWarnings({"UncommentedMain", "MultipleStringLiterals"})
     public static void main(String[] args) throws Exception {
         Database database = new Database()
             .withName("org.jooq.meta.postgres.PostgresDatabase")
