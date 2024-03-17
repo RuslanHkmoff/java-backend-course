@@ -13,9 +13,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class LinkUpdateServiceImpl implements LinkUpdatesService {
     private static final String UPDATE_MESSAGE = "The link has been updated\n%s";

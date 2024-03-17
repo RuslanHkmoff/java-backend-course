@@ -5,10 +5,9 @@ import edu.java.exception.ChatDoesntExistsException;
 import edu.java.model.Chat;
 import edu.java.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+//@Service
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
 

@@ -17,8 +17,8 @@ public class JdbcSubscriptionRepository implements SubscriptionRepository {
         "INSERT INTO subscriptions (chat_id, link_id) VALUES (?, ?)";
     private static final String FIND_CHATS_QUERY =
         "SELECT c.id, c.created_at FROM chat c"
-                + " JOIN subscriptions s ON c.id = s.link_id"
-                + " WHERE s.link_id = ?";
+            + " JOIN subscriptions s ON c.id = s.link_id"
+            + " WHERE s.link_id = ?";
 
     private static final String FIND_LINKS_QUERY =
         "SELECT l.id, l.url, l.visited_at, l.updated_at, l.updates_count FROM link l"

@@ -10,10 +10,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+//@Service
 public class LinkServiceImpl implements LinkService {
 
     private final LinkRepository linkRepository;

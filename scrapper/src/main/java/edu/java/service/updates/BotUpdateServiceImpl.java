@@ -7,9 +7,8 @@ import edu.java.repository.SubscriptionRepository;
 import edu.java.service.client.BotService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class BotUpdateServiceImpl implements BotUpdateService {
     private final BotService botService;

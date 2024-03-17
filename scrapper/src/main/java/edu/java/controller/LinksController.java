@@ -47,7 +47,7 @@ public class LinksController {
         }
     )
 
-    @DeleteMapping(value = "/links{id}", produces = "application/json")
+    @DeleteMapping(value = "/links/{id}", produces = "application/json")
     public LinkResponse deleteLink(
         @PathVariable @Positive Long id,
         @RequestBody RemoveLinkRequest request
