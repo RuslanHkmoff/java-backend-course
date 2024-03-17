@@ -23,7 +23,7 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void addTest() {
         Link link = new Link();
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test1");
         link.setUrl(url);
         Link add = jooqLinkRepository.add(link);
         assertThat(add.getUrl()).isEqualTo(url);
@@ -33,7 +33,7 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void findByUrlTest() {
         Link link = new Link();
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test2");
         link.setUrl(url);
         jooqLinkRepository.add(link);
         assertThat(jooqLinkRepository.findByUrl(url)).isNotEmpty();
@@ -42,7 +42,7 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     void removeTest() {
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test3");
         Long id = jooqLinkRepository.findByUrl(url).get().getId();
         assertDoesNotThrow(() -> jooqLinkRepository.remove(id));
         assertThat(jooqLinkRepository.findById(id)).isEmpty();
@@ -50,7 +50,7 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
 
     @Test
     void updateLinkTest() {
-        URI url = URI.create("uri/tesst");
+        URI url = URI.create("uri/test4");
         jooqLinkRepository.add(Link.builder().url(url).build());
         Long id = jooqLinkRepository.findByUrl(url).get().getId();
         OffsetDateTime time = OffsetDateTime.parse(
