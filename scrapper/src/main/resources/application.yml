@@ -7,12 +7,11 @@ app:
     github: https://api.github.com/repos/
     stackoverflow: https://api.stackexchange.com/2.3/questions/
     bot: http://localhost:8090
+  db-access-type: jooq
 
 spring:
   application:
     name: scrapper
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5437/scrapper

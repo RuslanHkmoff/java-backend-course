@@ -13,7 +13,8 @@ public record ApplicationConfig(
     BaseUrl baseUrl,
     @Bean
     @NotNull
-    Scheduler scheduler
+    Scheduler scheduler,
+    String  dbAccessType
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
