@@ -5,56 +5,64 @@ import edu.java.model.Link;
 import edu.java.scrapper.IntegrationTest;
 import java.net.URI;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class JdbcSubscriptionRepositoryTest extends IntegrationTest {
-    private static final Long CHAT_ID = 12L;
-    private static JdbcSubscriptionRepository jdbcSubscriptionRepository;
-    private static Link link;
+    @Autowired
+    private JdbcSubscriptionRepository jdbcSubscriptionRepository;
 
-    @BeforeAll
-    static void init() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl(POSTGRES.getJdbcUrl());
-        dataSource.setUsername(POSTGRES.getUsername());
-        dataSource.setPassword(POSTGRES.getPassword());
-        jdbcSubscriptionRepository = new JdbcSubscriptionRepository(new JdbcTemplate(dataSource));
-        JdbcChatRepository jdbcChatRepository = new JdbcChatRepository(new JdbcTemplate(dataSource));
-        JdbcLinkRepository jdbcLinkRepository = new JdbcLinkRepository(new JdbcTemplate(dataSource));
-        jdbcChatRepository.add(Chat.builder().id(CHAT_ID).build());
-        link = jdbcLinkRepository.add(Link.builder().url(URI.create("uri/test2")).build());
-    }
+    @Autowired
+    private JdbcLinkRepository jdbcLinkRepository;
+    @Autowired
+    private JdbcChatRepository jdbcChatRepository;
 
     @Test
+    @Transactional
     @Rollback
     void addLinkToChatTest() {
-        assertDoesNotThrow(() -> jdbcSubscriptionRepository.addLinkToChat(CHAT_ID, link.getId()));
+        Link link = jdbcLinkRepository.add(Link.builder().url(URI.create("test/uri1")).build());
+        jdbcChatRepository.add(Chat.builder().id(101L).build());
+        assertDoesNotThrow(() -> jdbcSubscriptionRepository.addLinkToChat(101L, link.getId()));
     }
 
     @Test
+    @Transactional
     @Rollback
-    void findLinksByChatTest() {
-        jdbcSubscriptionRepository.addLinkToChat(CHAT_ID, link.getId());
-        List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(CHAT_ID);
+    void findLinksByChatNotEmptyResultTest() {
+        Link link = jdbcLinkRepository.add(Link.builder().url(URI.create("test/uri2")).build());
+        jdbcChatRepository.add(Chat.builder().id(102L).build());
+        jdbcSubscriptionRepository.addLinkToChat(102L, link.getId());
+        List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(102L);
         Long actual = linksByChat.getFirst().getId();
         assertThat(link.getId()).isEqualTo(actual);
     }
 
     @Test
+    @Transactional
+    @Rollback
+    void findLinksByChatEmptyResultTest() {
+        jdbcChatRepository.add(Chat.builder().id(103L).build());
+        List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(103L);
+        assertTrue(linksByChat.isEmpty());
+    }
+
+    @Test
+    @Transactional
     @Rollback
     void removeLinkFromChatTest() {
-        assertDoesNotThrow(() -> jdbcSubscriptionRepository.removeLinkFromChat(CHAT_ID, link.getId()));
-        List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(CHAT_ID);
+        Link link = jdbcLinkRepository.add(Link.builder().url(URI.create("test/uri3")).build());
+        jdbcChatRepository.add(Chat.builder().id(104L).build());
+        jdbcSubscriptionRepository.addLinkToChat(104L, link.getId());
+        assertDoesNotThrow(() -> jdbcSubscriptionRepository.removeLinkFromChat(104L, link.getId()));
+        List<Link> linksByChat = jdbcSubscriptionRepository.findLinksByChat(104L);
         assertTrue(linksByChat.isEmpty());
     }
 }
