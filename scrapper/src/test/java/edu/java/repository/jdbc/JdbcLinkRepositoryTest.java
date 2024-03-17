@@ -23,7 +23,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void addTest() {
         Link link = new Link();
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test5");
         link.setUrl(url);
         Link add = jdbcLinkRepository.add(link);
         assertThat(add.getUrl()).isEqualTo(url);
@@ -33,7 +33,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void findByUrlTest() {
         Link link = new Link();
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test6");
         link.setUrl(url);
         jdbcLinkRepository.add(link);
         assertThat(jdbcLinkRepository.findByUrl(url)).isNotEmpty();
@@ -42,7 +42,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     void removeTest() {
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test7");
         Long id = jdbcLinkRepository.findByUrl(url).get().getId();
         assertDoesNotThrow(() -> jdbcLinkRepository.remove(id));
         assertThat(jdbcLinkRepository.findById(id)).isEmpty();
@@ -50,7 +50,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
 
     @Test
     void updateLinkTest() {
-        URI url = URI.create("uri/test");
+        URI url = URI.create("uri/test8");
         jdbcLinkRepository.add(Link.builder().url(url).build());
         Long id = jdbcLinkRepository.findByUrl(url).get().getId();
         OffsetDateTime time = OffsetDateTime.parse(

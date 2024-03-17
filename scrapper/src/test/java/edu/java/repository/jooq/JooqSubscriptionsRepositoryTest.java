@@ -28,7 +28,7 @@ public class JooqSubscriptionsRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     void addLinkToChatTest() {
-        Link link = jooqLinkRepository.add(Link.builder().url(URI.create("test/uri1")).build());
+        Link link = jooqLinkRepository.add(Link.builder().url(URI.create("test/uri3")).build());
         jooqChatRepository.add(Chat.builder().id(101L).build());
         assertDoesNotThrow(() -> jooqSubscriptionsRepository.addLinkToChat(101L, link.getId()));
     }
@@ -37,7 +37,7 @@ public class JooqSubscriptionsRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     void findLinksByChatNotEmptyResultTest() {
-        Link link = jooqLinkRepository.add(Link.builder().url(URI.create("test/uri2")).build());
+        Link link = jooqLinkRepository.add(Link.builder().url(URI.create("test/uri4")).build());
         jooqChatRepository.add(Chat.builder().id(102L).build());
         jooqSubscriptionsRepository.addLinkToChat(102L, link.getId());
         List<Link> linksByChat = jooqSubscriptionsRepository.findLinksByChat(102L);
