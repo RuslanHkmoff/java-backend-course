@@ -32,10 +32,8 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     void findByUrlTest() {
-        Link link = new Link();
         URI url = URI.create("uri/test6");
-        link.setUrl(url);
-        jdbcLinkRepository.add(link);
+        jdbcLinkRepository.add(Link.builder().url(url).build());
         assertThat(jdbcLinkRepository.findByUrl(url)).isNotEmpty();
     }
 
@@ -43,6 +41,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void removeTest() {
         URI url = URI.create("uri/test7");
+        jdbcLinkRepository.add(Link.builder().url(url).build());
         Long id = jdbcLinkRepository.findByUrl(url).get().getId();
         assertDoesNotThrow(() -> jdbcLinkRepository.remove(id));
         assertThat(jdbcLinkRepository.findById(id)).isEmpty();

@@ -32,10 +32,8 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
     @Test
     @Rollback
     void findByUrlTest() {
-        Link link = new Link();
         URI url = URI.create("uri/test2");
-        link.setUrl(url);
-        jooqLinkRepository.add(link);
+        jooqLinkRepository.add(Link.builder().url(url).build());
         assertThat(jooqLinkRepository.findByUrl(url)).isNotEmpty();
     }
 
@@ -43,6 +41,7 @@ public class JooqLinkRepositoryTest extends IntegrationTest {
     @Rollback
     void removeTest() {
         URI url = URI.create("uri/test3");
+        jooqLinkRepository.add(Link.builder().url(url).build());
         Long id = jooqLinkRepository.findByUrl(url).get().getId();
         assertDoesNotThrow(() -> jooqLinkRepository.remove(id));
         assertThat(jooqLinkRepository.findById(id)).isEmpty();
