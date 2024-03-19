@@ -8,7 +8,6 @@ import edu.java.service.client.BotService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
-//@Service
 @RequiredArgsConstructor
 public class BotUpdateServiceImpl implements BotUpdateService {
     private final BotService botService;

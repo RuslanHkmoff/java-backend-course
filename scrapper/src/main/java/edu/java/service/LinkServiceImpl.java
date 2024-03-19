@@ -12,7 +12,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-//@Service
 public class LinkServiceImpl implements LinkService {
 
     private final LinkRepository linkRepository;

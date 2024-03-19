@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 
-//@Service
 @RequiredArgsConstructor
 public class LinkUpdateServiceImpl implements LinkUpdatesService {
     private static final String UPDATE_MESSAGE = "The link has been updated\n%s";

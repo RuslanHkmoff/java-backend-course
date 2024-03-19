@@ -7,7 +7,6 @@ import edu.java.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-//@Service
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
 
