@@ -1,4 +1,4 @@
-package edu.java.service;
+package edu.java.service.client;
 
 import edu.java.response.github.GithubResponse;
 import lombok.RequiredArgsConstructor;

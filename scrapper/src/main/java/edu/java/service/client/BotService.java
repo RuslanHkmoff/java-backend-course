@@ -1,4 +1,4 @@
-package edu.java.service;
+package edu.java.service.client;
 
 import edu.java.models.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
