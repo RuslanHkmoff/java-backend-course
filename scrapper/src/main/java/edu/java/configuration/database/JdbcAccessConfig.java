@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.database;
 
 import edu.java.repository.jdbc.JdbcChatRepository;
 import edu.java.repository.jdbc.JdbcLinkRepository;
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnProperty(value = "app.db-access-type", havingValue = "jdbc")
 @Slf4j
-public class JdbcConfig {
+public class JdbcAccessConfig {
 
     public static final String INFO_MESSAGE = "Using Jdbc";
 

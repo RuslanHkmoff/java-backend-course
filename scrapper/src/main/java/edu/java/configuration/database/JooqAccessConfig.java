@@ -1,4 +1,4 @@
-package edu.java.configuration;
+package edu.java.configuration.database;
 
 import edu.java.repository.jooq.JooqChatRepository;
 import edu.java.repository.jooq.JooqLinkRepository;
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @ConditionalOnProperty(value = "app.db-access-type", havingValue = "jooq")
 @ComponentScan("edu.java.repository.jooq")
-public class JooqConfig {
+public class JooqAccessConfig {
 
     public static final String INFO_MESSAGE = "Using jooq";
 
