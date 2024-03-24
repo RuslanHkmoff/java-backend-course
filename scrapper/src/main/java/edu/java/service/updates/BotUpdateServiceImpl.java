@@ -3,7 +3,7 @@ package edu.java.service.updates;
 import edu.java.model.Chat;
 import edu.java.models.request.LinkUpdateRequest;
 import edu.java.repository.LinkRepository;
-import edu.java.repository.SubscriptionRepository;
+import edu.java.repository.SubscriptionsRepository;
 import edu.java.service.client.BotService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class BotUpdateServiceImpl implements BotUpdateService {
     private final BotService botService;
     private final LinkRepository linkRepository;
-    private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionsRepository subscriptionRepository;
 
     @Override
     public void sendUpdates(List<LinkUpdateDto> updatedLinks) {

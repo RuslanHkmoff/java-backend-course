@@ -22,7 +22,10 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     void addTest() {
-        Chat chat = new Chat(1234L, OffsetDateTime.now());
+        Chat chat = Chat.builder()
+            .id(1234L)
+            .createdAt(OffsetDateTime.now())
+            .build();
         assertDoesNotThrow(() -> jdbcChatRepository.add(chat));
         Optional<Chat> actual = jdbcChatRepository.findById(1234L);
         assertTrue(actual.isPresent());
@@ -33,7 +36,10 @@ public class JdbcChatRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     void removeTest() {
-        Chat chat = new Chat(1235L, OffsetDateTime.now());
+        Chat chat = Chat.builder()
+            .id(1235L)
+            .createdAt(OffsetDateTime.now())
+            .build();
         jdbcChatRepository.add(chat);
         jdbcChatRepository.remove(1235L);
         Optional<Chat> actual = jdbcChatRepository.findById(1235L);

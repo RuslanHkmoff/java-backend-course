@@ -9,7 +9,7 @@ import edu.java.bot.model.command.ListCommand;
 import edu.java.bot.model.command.StartCommand;
 import edu.java.bot.model.command.TrackCommand;
 import edu.java.bot.model.command.UntrackCommand;
-import edu.java.bot.repository.UserRepository;
+import edu.java.bot.service.ScrapperService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +20,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
 
 public class HelpCommandTest {
+    @Mock
+    private ScrapperService scrapperService;
     private List<Command> commands;
     @Mock
     private Update update;
@@ -31,12 +33,11 @@ public class HelpCommandTest {
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
-        UserRepository userRepository = new UserRepository();
         commands = List.of(
-            new StartCommand(userRepository),
-            new TrackCommand(userRepository),
-            new UntrackCommand(userRepository),
-            new ListCommand(userRepository)
+            new StartCommand(scrapperService),
+            new TrackCommand(scrapperService),
+            new UntrackCommand(scrapperService),
+            new ListCommand(scrapperService)
         );
     }
 

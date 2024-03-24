@@ -17,7 +17,7 @@ public class LinkMapper implements RowMapper<Link> {
             .url(URI.create(rs.getString("url")))
             .updatedAt(rs.getObject("updated_at", OffsetDateTime.class))
             .visitedAt(rs.getObject("visited_at", OffsetDateTime.class))
-            .updateCount(rs.getInt("updates_count"))
+            .updatesCount(rs.getInt("updates_count"))
             .build();
     }
 }

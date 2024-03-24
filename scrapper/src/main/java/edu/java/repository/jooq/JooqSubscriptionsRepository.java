@@ -2,7 +2,7 @@ package edu.java.repository.jooq;
 
 import edu.java.model.Chat;
 import edu.java.model.Link;
-import edu.java.repository.SubscriptionRepository;
+import edu.java.repository.SubscriptionsRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -13,7 +13,7 @@ import static edu.java.model.jooq.tables.Link.LINK;
 
 @Repository
 @RequiredArgsConstructor
-public class JooqSubscriptionsRepository implements SubscriptionRepository {
+public class JooqSubscriptionsRepository implements SubscriptionsRepository {
     private final DSLContext dsl;
 
     @Override

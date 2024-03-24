@@ -61,6 +61,6 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
         Optional<Link> actual = jdbcLinkRepository.findById(id);
         assertTrue(actual.isPresent());
         assertThat(actual.get().getUpdatedAt()).isEqualTo(time);
-        assertThat(actual.get().getUpdateCount()).isEqualTo(7);
+        assertThat(actual.get().getUpdatesCount()).isEqualTo(7);
     }
 }

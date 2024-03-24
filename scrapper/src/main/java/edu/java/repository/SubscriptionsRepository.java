@@ -4,7 +4,7 @@ import edu.java.model.Chat;
 import edu.java.model.Link;
 import java.util.List;
 
-public interface SubscriptionRepository {
+public interface SubscriptionsRepository {
 
     void addLinkToChat(Long chatId, Long linkId);
 

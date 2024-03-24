@@ -13,5 +13,5 @@ import org.springframework.context.annotation.Configuration;
         contact = @Contact(name = "RuslanHkmoff", url = "https://t.me/hkmoff")
     )
 )
-public class SwaggerConfiguration {
+public class SwaggerConfig {
 }
