@@ -7,24 +7,23 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class StartCommand implements Command {
+public class UnregisterCommand implements Command {
     private final ScrapperService scrapperService;
 
     @Override
     public String command() {
-        return "/start";
+        return "/unregister";
     }
 
     @Override
     public String description() {
-        return "Used to register user";
+        return "Used for unregister user";
     }
 
     @Override
     public String handle(Update update) {
         Long id = update.message().chat().id();
-        boolean isRegistered = scrapperService.registerChat(id);
-        return isRegistered ? "You have successfully registered!" : "You cannot to be registered";
+        boolean isDelete = scrapperService.deleteChat(id);
+        return isDelete ? "You have successfully unregistered" : "You cannot to be unregistered";
     }
 }
-

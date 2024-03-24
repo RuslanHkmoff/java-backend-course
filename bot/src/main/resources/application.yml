@@ -1,6 +1,6 @@
 app:
   telegram-token: ${TOKEN}
-  scrapper-url: http://localhost:8080
+  scrapper-url: "http://localhost:8080"
 
 spring:
   application:

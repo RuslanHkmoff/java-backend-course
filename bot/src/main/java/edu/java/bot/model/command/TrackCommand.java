@@ -2,20 +2,16 @@ package edu.java.bot.model.command;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.model.User;
-import edu.java.bot.repository.UserRepository;
-import java.net.URI;
+import edu.java.bot.service.ScrapperService;
+import edu.java.models.response.LinkResponse;
 import java.util.Optional;
-import java.util.Set;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TrackCommand implements Command {
-    private final UserRepository userRepository;
-
-    public TrackCommand(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final ScrapperService scrapperService;
 
     @Override
     public String command() {
@@ -35,13 +31,7 @@ public class TrackCommand implements Command {
         if (messageParts.length < 2) {
             return "A link must be provided";
         }
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            return "You need to be registered";
-        }
-        Set<URI> updateLinks = user.get().getLinks();
-        updateLinks.add(URI.create(messageParts[1]));
-        userRepository.save(new User(id, updateLinks));
-        return "Link successfully tracking";
+        Optional<LinkResponse> linkResponse = scrapperService.addLink(id, messageParts[1]);
+        return linkResponse.isPresent() ? "Link successfully tracking" : "You cannot track command";
     }
 }
