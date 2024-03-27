@@ -67,7 +67,8 @@ public class Chat extends TableImpl<ChatRecord> {
     /**
      * The column <code>public.chat.created_at</code>.
      */
-    public final TableField<ChatRecord, OffsetDateTime> CREATED_AT = createField(DSL.name("created_at"),
+    public final TableField<ChatRecord, OffsetDateTime> CREATED_AT = createField(
+        DSL.name("created_at"),
         SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false)
             .defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.TIMESTAMPWITHTIMEZONE)),
         this,

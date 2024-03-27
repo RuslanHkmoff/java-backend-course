@@ -9,9 +9,9 @@ import edu.java.bot.model.command.ListCommand;
 import edu.java.bot.model.command.StartCommand;
 import edu.java.bot.model.command.TrackCommand;
 import edu.java.bot.model.command.UntrackCommand;
-import edu.java.bot.repository.UserRepository;
 import edu.java.bot.service.LinkTrackerBotService;
 import java.util.List;
+import edu.java.bot.service.ScrapperService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,6 +24,8 @@ import static org.mockito.Mockito.when;
 public class LinkTrackerBotServiceTest {
     private LinkTrackerBotService service;
     @Mock
+    private ScrapperService scrapperService;
+    @Mock
     private Update update;
     @Mock
     private Message message;
@@ -33,12 +35,11 @@ public class LinkTrackerBotServiceTest {
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
-        UserRepository userRepository = new UserRepository();
         List<Command> commands = List.of(
-            new StartCommand(userRepository),
-            new TrackCommand(userRepository),
-            new UntrackCommand(userRepository),
-            new ListCommand(userRepository)
+            new StartCommand(scrapperService),
+            new TrackCommand(scrapperService),
+            new UntrackCommand(scrapperService),
+            new ListCommand(scrapperService)
         );
         service = new LinkTrackerBotService(commands);
     }

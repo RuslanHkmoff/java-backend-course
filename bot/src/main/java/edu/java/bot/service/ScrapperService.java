@@ -4,6 +4,7 @@ import edu.java.models.request.AddLinkRequest;
 import edu.java.models.request.RemoveLinkRequest;
 import edu.java.models.response.LinkResponse;
 import edu.java.models.response.ListLinksResponse;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -21,7 +22,7 @@ public class ScrapperService {
 
     private final WebClient scrapperClient;
 
-    public LinkResponse addLink(Long id, String link) {
+    public Optional<LinkResponse> addLink(Long id, String link) {
         return scrapperClient
             .post()
             .uri(String.format(LINKS_URI, id))
@@ -30,10 +31,10 @@ public class ScrapperService {
             .bodyToMono(LinkResponse.class)
             .doOnError(error -> log.error("Error while addLink, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
-            .block();
+            .blockOptional();
     }
 
-    public ListLinksResponse getAllLinks(Long id) {
+    public Optional<ListLinksResponse> getAllLinks(Long id) {
         return scrapperClient
             .get()
             .uri(String.format(LINKS_URI, id))
@@ -41,10 +42,10 @@ public class ScrapperService {
             .bodyToMono(ListLinksResponse.class)
             .doOnError(error -> log.error("Error while getAllLinks, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
-            .block();
+            .blockOptional();
     }
 
-    public LinkResponse deleteLink(Long id, String link) {
+    public Optional<LinkResponse> deleteLink(Long id, String link) {
         return scrapperClient
             .method(HttpMethod.DELETE)
             .uri(String.format(LINKS_URI, id))
@@ -53,7 +54,7 @@ public class ScrapperService {
             .bodyToMono(LinkResponse.class)
             .doOnError(error -> log.error("Error while deleteLink, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
-            .block();
+            .blockOptional();
     }
 
     public boolean registerChat(Long id) {

@@ -1,16 +1,16 @@
 package edu.java.bot.model.command;
 
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.repository.UserRepository;
+import edu.java.bot.service.ScrapperService;
+import edu.java.models.response.ListLinksResponse;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ListCommand implements Command {
-    private final UserRepository userRepository;
-
-    public ListCommand(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final ScrapperService scrapperService;
 
     @Override
     public String command() {
@@ -26,10 +26,11 @@ public class ListCommand implements Command {
     public String handle(Update update) {
         Long id = update.message().chat().id();
         StringBuilder responseMessage = new StringBuilder();
-        userRepository.findById(id).ifPresentOrElse(
-            user -> {
+        Optional<ListLinksResponse> listLinksResponse = scrapperService.getAllLinks(id);
+        listLinksResponse.ifPresentOrElse(
+            allLinks -> {
                 responseMessage.append("Tracking links:").append(LINE_SEPARATOR);
-                user.getLinks().forEach(link -> responseMessage.append(link).append(LINE_SEPARATOR));
+                allLinks.links().forEach(link -> responseMessage.append(link.url()).append(LINE_SEPARATOR));
             },
             () -> responseMessage.append("You need to be registered")
         );

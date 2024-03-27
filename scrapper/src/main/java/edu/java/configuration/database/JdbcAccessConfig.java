@@ -1,8 +1,8 @@
-package edu.java.configuration;
+package edu.java.configuration.database;
 
-import edu.java.repository.jooq.JooqChatRepository;
-import edu.java.repository.jooq.JooqLinkRepository;
-import edu.java.repository.jooq.JooqSubscriptionsRepository;
+import edu.java.repository.jdbc.JdbcChatRepository;
+import edu.java.repository.jdbc.JdbcLinkRepository;
+import edu.java.repository.jdbc.JdbcSubscriptionRepository;
 import edu.java.service.ChatService;
 import edu.java.service.ChatServiceImpl;
 import edu.java.service.LinkService;
@@ -17,46 +17,44 @@ import edu.java.service.updates.LinkUpdatesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(value = "app.db-access-type", havingValue = "jdbc")
 @Slf4j
-@ConditionalOnProperty(value = "app.db-access-type", havingValue = "jooq")
-@ComponentScan("edu.java.repository.jooq")
-public class JooqConfig {
+public class JdbcAccessConfig {
 
-    public static final String INFO_MESSAGE = "Using jooq";
+    public static final String INFO_MESSAGE = "Using Jdbc";
 
     @Bean
     public LinkService linkService(
-        JooqLinkRepository jooqLinkRepository,
-        JooqChatRepository jooqChatRepository,
-        JooqSubscriptionsRepository jooqSubscriptionsRepository
+        JdbcLinkRepository jdbcLinkRepository,
+        JdbcChatRepository jdbcChatRepository,
+        JdbcSubscriptionRepository jdbcSubscriptionRepository
     ) {
         log.info(INFO_MESSAGE);
         return new LinkServiceImpl(
-            jooqLinkRepository,
-            jooqSubscriptionsRepository,
-            jooqChatRepository
+            jdbcLinkRepository,
+            jdbcSubscriptionRepository,
+            jdbcChatRepository
         );
     }
 
     @Bean
-    public ChatService jooqChatService(JooqChatRepository jooqChatRepository) {
+    public ChatService jdbcChatService(JdbcChatRepository jdbcChatRepository) {
         log.info(INFO_MESSAGE);
-        return new ChatServiceImpl(jooqChatRepository);
+        return new ChatServiceImpl(jdbcChatRepository);
     }
 
     @Bean
     public LinkUpdatesService linkUpdatesService(
-        JooqLinkRepository jooqLinkRepository,
+        JdbcLinkRepository jdbcLinkRepository,
         GithubService githubService,
         StackOverflowService stackOverflowService
     ) {
         log.info(INFO_MESSAGE);
         return new LinkUpdateServiceImpl(
-            jooqLinkRepository,
+            jdbcLinkRepository,
             githubService,
             stackOverflowService
         );
@@ -65,14 +63,15 @@ public class JooqConfig {
     @Bean
     public BotUpdateService botUpdateService(
         BotService botService,
-        JooqLinkRepository jooqLinkRepository,
-        JooqSubscriptionsRepository jooqSubscriptionsRepository
+        JdbcLinkRepository jdbcLinkRepository,
+        JdbcSubscriptionRepository jdbcSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new BotUpdateServiceImpl(
             botService,
-            jooqLinkRepository,
-            jooqSubscriptionsRepository
+            jdbcLinkRepository,
+            jdbcSubscriptionsRepository
         );
     }
 }
+

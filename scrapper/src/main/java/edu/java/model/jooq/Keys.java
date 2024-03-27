@@ -50,7 +50,8 @@ public class Keys {
     public static final UniqueKey<LinkRecord> LINK_URL_KEY =
         Internal.createUniqueKey(Link.LINK, DSL.name("link_url_key"), new TableField[] {Link.LINK.URL}, true);
     public static final UniqueKey<SubscriptionsRecord> SUBSCRIPTIONS_PKEY =
-        Internal.createUniqueKey(Subscriptions.SUBSCRIPTIONS,
+        Internal.createUniqueKey(
+            Subscriptions.SUBSCRIPTIONS,
             DSL.name("subscriptions_pkey"),
             new TableField[] {Subscriptions.SUBSCRIPTIONS.ID},
             true
@@ -61,7 +62,8 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final ForeignKey<SubscriptionsRecord, ChatRecord> SUBSCRIPTIONS__SUBSCRIPTIONS_CHAT_ID_FKEY =
-        Internal.createForeignKey(Subscriptions.SUBSCRIPTIONS,
+        Internal.createForeignKey(
+            Subscriptions.SUBSCRIPTIONS,
             DSL.name("subscriptions_chat_id_fkey"),
             new TableField[] {Subscriptions.SUBSCRIPTIONS.CHAT_ID},
             Keys.CHAT_PKEY,
@@ -69,7 +71,8 @@ public class Keys {
             true
         );
     public static final ForeignKey<SubscriptionsRecord, LinkRecord> SUBSCRIPTIONS__SUBSCRIPTIONS_LINK_ID_FKEY =
-        Internal.createForeignKey(Subscriptions.SUBSCRIPTIONS,
+        Internal.createForeignKey(
+            Subscriptions.SUBSCRIPTIONS,
             DSL.name("subscriptions_link_id_fkey"),
             new TableField[] {Subscriptions.SUBSCRIPTIONS.LINK_ID},
             Keys.LINK_PKEY,

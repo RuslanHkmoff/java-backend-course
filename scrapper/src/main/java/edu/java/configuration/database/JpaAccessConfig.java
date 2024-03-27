@@ -1,8 +1,8 @@
-package edu.java.configuration;
+package edu.java.configuration.database;
 
-import edu.java.repository.jdbc.JdbcChatRepository;
-import edu.java.repository.jdbc.JdbcLinkRepository;
-import edu.java.repository.jdbc.JdbcSubscriptionRepository;
+import edu.java.repository.jpa.JpaChatRepository;
+import edu.java.repository.jpa.JpaLinkRepository;
+import edu.java.repository.jpa.JpaSubscriptionsRepository;
 import edu.java.service.ChatService;
 import edu.java.service.ChatServiceImpl;
 import edu.java.service.LinkService;
@@ -20,41 +20,40 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty(value = "app.db-access-type", havingValue = "jdbc")
+@ConditionalOnProperty(value = "app.db-access-type", havingValue = "jpa")
 @Slf4j
-public class JdbcConfig {
-
-    public static final String INFO_MESSAGE = "Using Jdbc";
+public class JpaAccessConfig {
+    private static final String INFO_MESSAGE = "Using jpa";
 
     @Bean
     public LinkService linkService(
-        JdbcLinkRepository jdbcLinkRepository,
-        JdbcChatRepository jdbcChatRepository,
-        JdbcSubscriptionRepository jdbcSubscriptionRepository
+        JpaLinkRepository jpaLinkRepository,
+        JpaChatRepository jpaChatRepository,
+        JpaSubscriptionsRepository jpaSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new LinkServiceImpl(
-            jdbcLinkRepository,
-            jdbcSubscriptionRepository,
-            jdbcChatRepository
+            jpaLinkRepository,
+            jpaSubscriptionsRepository,
+            jpaChatRepository
         );
     }
 
     @Bean
-    public ChatService jdbcChatService(JdbcChatRepository jdbcChatRepository) {
+    public ChatService jpaChatService(JpaChatRepository jpaChatRepository) {
         log.info(INFO_MESSAGE);
-        return new ChatServiceImpl(jdbcChatRepository);
+        return new ChatServiceImpl(jpaChatRepository);
     }
 
     @Bean
     public LinkUpdatesService linkUpdatesService(
-        JdbcLinkRepository jdbcLinkRepository,
+        JpaLinkRepository jpaLinkRepository,
         GithubService githubService,
         StackOverflowService stackOverflowService
     ) {
         log.info(INFO_MESSAGE);
         return new LinkUpdateServiceImpl(
-            jdbcLinkRepository,
+            jpaLinkRepository,
             githubService,
             stackOverflowService
         );
@@ -63,15 +62,14 @@ public class JdbcConfig {
     @Bean
     public BotUpdateService botUpdateService(
         BotService botService,
-        JdbcLinkRepository jdbcLinkRepository,
-        JdbcSubscriptionRepository jdbcSubscriptionsRepository
+        JpaLinkRepository jpaLinkRepository,
+        JpaSubscriptionsRepository jpaSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new BotUpdateServiceImpl(
             botService,
-            jdbcLinkRepository,
-            jdbcSubscriptionsRepository
+            jpaLinkRepository,
+            jpaSubscriptionsRepository
         );
     }
 }
-

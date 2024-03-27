@@ -3,21 +3,22 @@ package edu.command;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.model.User;
 import edu.java.bot.model.command.TrackCommand;
-import edu.java.bot.repository.UserRepository;
-import java.util.HashSet;
+import edu.java.bot.service.ScrapperService;
+import edu.java.models.response.LinkResponse;
+import java.net.URI;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TrackCommandTest {
-    private UserRepository userRepository;
+    @Mock
+    private ScrapperService scrapperService;
     private TrackCommand command;
     @Mock
     private Update update;
@@ -29,8 +30,7 @@ public class TrackCommandTest {
     @BeforeEach
     void init() {
         MockitoAnnotations.openMocks(this);
-        userRepository= new UserRepository();
-        command = new TrackCommand(userRepository);
+        command = new TrackCommand(scrapperService);
     }
 
     @Test
@@ -45,11 +45,12 @@ public class TrackCommandTest {
     @Test
     @DisplayName("test track: valid command")
     void testTrackValidCommand() {
-        userRepository.save(new User(1L, new HashSet<>()));
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.text()).thenReturn("/track link");
         when(chat.id()).thenReturn(1L);
+        when(scrapperService.addLink(1L, "link"))
+            .thenReturn(Optional.of(new LinkResponse(1L, URI.create("link"))));
 
         String expected = "Link successfully tracking";
         assertThat(command.handle(update)).isEqualTo(expected);
@@ -58,7 +59,6 @@ public class TrackCommandTest {
     @Test
     @DisplayName("test track: invalid command")
     void testTrackInvalidCommand() {
-        userRepository.save(new User(1L, new HashSet<>()));
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.text()).thenReturn("/track");
@@ -75,8 +75,8 @@ public class TrackCommandTest {
         when(message.chat()).thenReturn(chat);
         when(message.text()).thenReturn("/track link");
         when(chat.id()).thenReturn(1L);
-
-        String expected = "You need to be registered";
+        when(scrapperService.addLink(1L, "link")).thenReturn(Optional.empty());
+        String expected = "You cannot track command";
         assertThat(command.handle(update)).isEqualTo(expected);
     }
 

@@ -76,7 +76,8 @@ public class Link extends TableImpl<LinkRecord> {
     /**
      * The column <code>public.link.visited_at</code>.
      */
-    public final TableField<LinkRecord, OffsetDateTime> VISITED_AT = createField(DSL.name("visited_at"),
+    public final TableField<LinkRecord, OffsetDateTime> VISITED_AT = createField(
+        DSL.name("visited_at"),
         SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false)
             .defaultValue(DSL.field(DSL.raw("now()"), SQLDataType.TIMESTAMPWITHTIMEZONE)),
         this,

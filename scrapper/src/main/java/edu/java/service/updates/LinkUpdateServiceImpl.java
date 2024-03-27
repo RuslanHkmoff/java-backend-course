@@ -45,7 +45,7 @@ public class LinkUpdateServiceImpl implements LinkUpdatesService {
         }
         if (updateParameters != null) {
             OffsetDateTime oldUpdatedAt = link.getUpdatedAt();
-            Integer oldUpdateCount = link.getUpdateCount();
+            Integer oldUpdateCount = link.getUpdatesCount();
 
             OffsetDateTime newUpdatedAt = updateParameters.updatedAt();
             Integer newUpdateCount = updateParameters.updateCount();

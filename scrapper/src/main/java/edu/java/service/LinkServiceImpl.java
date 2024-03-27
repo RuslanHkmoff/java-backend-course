@@ -5,7 +5,7 @@ import edu.java.exception.LinkDoesntExistsException;
 import edu.java.model.Link;
 import edu.java.repository.ChatRepository;
 import edu.java.repository.LinkRepository;
-import edu.java.repository.SubscriptionRepository;
+import edu.java.repository.SubscriptionsRepository;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class LinkServiceImpl implements LinkService {
 
     private final LinkRepository linkRepository;
 
-    private final SubscriptionRepository subscriptionRepository;
+    private final SubscriptionsRepository subscriptionRepository;
 
     private final ChatRepository chatRepository;
 

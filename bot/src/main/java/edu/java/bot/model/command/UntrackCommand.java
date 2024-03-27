@@ -2,19 +2,16 @@ package edu.java.bot.model.command;
 
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import edu.java.bot.model.User;
-import edu.java.bot.repository.UserRepository;
-import java.net.URI;
-import java.util.Set;
+import edu.java.bot.service.ScrapperService;
+import edu.java.models.response.LinkResponse;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class UntrackCommand implements Command {
-    private final UserRepository userRepository;
-
-    public UntrackCommand(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final ScrapperService scrapperService;
 
     @Override
     public String command() {
@@ -34,16 +31,7 @@ public class UntrackCommand implements Command {
         if (messageParts.length < 2) {
             return "A link must be provided";
         }
-        StringBuilder responseMessage = new StringBuilder();
-        userRepository.findById(id).ifPresentOrElse(
-            user -> {
-                Set<URI> updateLinks = user.getLinks();
-                updateLinks.remove(URI.create(messageParts[1]));
-                userRepository.save(new User(id, updateLinks));
-                responseMessage.append("Link successfully untrack");
-            },
-            () -> responseMessage.append("You need to be registered")
-        );
-        return responseMessage.toString();
+        Optional<LinkResponse> linkResponse = scrapperService.deleteLink(id, messageParts[1]);
+        return linkResponse.isPresent() ? "Link successfully untrack" : "You need to be registered";
     }
 }

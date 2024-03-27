@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @RequiredArgsConstructor
-public class ClientConfiguration {
+public class ApiConfiguration {
     private final ApplicationConfig config;
 
     @Bean

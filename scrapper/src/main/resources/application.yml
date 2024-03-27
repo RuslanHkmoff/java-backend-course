@@ -1,8 +1,8 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
-    force-check-delay: 600s
+    interval: 100s
+    force-check-delay: 100s
   base-url:
     github: https://api.github.com/repos/
     stackoverflow: https://api.stackexchange.com/2.3/questions/
@@ -19,6 +19,8 @@ spring:
     password: postgres
   liquibase:
     enabled: false
+
+
 server:
   port: 8080
 
