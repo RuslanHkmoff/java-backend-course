@@ -6,12 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class StackOverflowService {
     private final WebClient stackOverflowClient;
+    private final Retry retryStrategy;
 
     public Mono<StackOverflowResponse> fetchSofQuestion(Long questionId) {
         return stackOverflowClient.get()
@@ -20,6 +22,7 @@ public class StackOverflowService {
             ))
             .retrieve()
             .bodyToMono(StackOverflowResponse.class)
-            .doOnError(error -> log.error("Error has occurred {}", error.getMessage()));
+            .doOnError(error -> log.error("Error has occurred {}", error.getMessage()))
+            .retryWhen(retryStrategy);
     }
 }

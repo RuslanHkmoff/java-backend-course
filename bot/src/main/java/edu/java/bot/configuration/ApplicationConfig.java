@@ -1,6 +1,8 @@
 package edu.java.bot.configuration;
 
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,6 +12,11 @@ public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
     @NotEmpty
-    String scrapperUrl
+    String scrapperUrl,
+
+    @NotNull
+    RetryPolicy retryPolicy
 ) {
+    public record RetryPolicy(@NotNull Set<Integer> codes, @NotNull String backoff, int limit, long delay) {
+    }
 }
