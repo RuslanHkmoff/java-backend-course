@@ -1,6 +1,11 @@
 app:
   telegram-token: ${TOKEN}
   scrapper-url: "http://localhost:8080"
+  retry-policy:
+    codes: 500
+    backoff: constant
+    limit: 3
+    delay: 5000
 
 spring:
   application:
