@@ -46,7 +46,6 @@ public class UpdatesApiController {
         consumes = {"application/json"}
     )
     public void updatesPost(@RequestBody @Valid LinkUpdateRequest linkUpdate) {
-
         alertService.sendAlert(linkUpdate);
     }
 }

@@ -10,6 +10,7 @@ import edu.java.service.client.StackOverflowService;
 import edu.java.util.GithubRequestParameters;
 import edu.java.util.LinkParser;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,10 @@ public class LinkUpdateServiceImpl implements LinkUpdatesService {
         GithubResponse response =
             githubService.fetchGithubRepository(parameters.repoOwner(), parameters.repoName()).block();
         if (response != null) {
-            return new UpdateParameters(response.openIssuesCount(), response.updateAt());
+            return new UpdateParameters(
+                response.openIssuesCount(),
+                response.updateAt().withOffsetSameInstant(ZoneOffset.UTC)
+            );
         }
         return null;
     }
@@ -76,7 +80,10 @@ public class LinkUpdateServiceImpl implements LinkUpdatesService {
         StackOverflowResponse response = stackOverflowService.fetchSofQuestion(questionId).block();
         if (response != null) {
             QuestionResponse questionResponse = response.items().getFirst();
-            return new UpdateParameters(questionResponse.answerCount(), questionResponse.lastActivity());
+            return new UpdateParameters(
+                questionResponse.answerCount(),
+                questionResponse.lastActivity().withOffsetSameInstant(ZoneOffset.UTC)
+            );
         }
         return null;
     }
