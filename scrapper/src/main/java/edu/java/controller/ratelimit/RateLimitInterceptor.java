@@ -27,20 +27,12 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         this.delay = applicationConfig.rateLimit().delay();
     }
 
-    private Bucket newBucket(String addr) {
-        Refill refill = Refill.intervally(rateLimit, Duration.ofMinutes(delay));
-        Bandwidth limit = Bandwidth.classic(rateLimit, refill);
-        return Bucket.builder()
-            .addLimit(limit)
-            .build();
-    }
-
     public Bucket resolveBucket(String addr) {
         return cache.computeIfAbsent(addr, this::newBucket);
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler)
+    public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, Object handler)
         throws Exception {
         String ipAddr = request.getRemoteAddr();
         Bucket tokenBucket = resolveBucket(ipAddr);
@@ -54,5 +46,13 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Number of allowed requests exceeded");
             return false;
         }
+    }
+
+    private Bucket newBucket(String addr) {
+        Refill refill = Refill.intervally(rateLimit, Duration.ofMinutes(delay));
+        Bandwidth limit = Bandwidth.classic(rateLimit, refill);
+        return Bucket.builder()
+            .addLimit(limit)
+            .build();
     }
 }
