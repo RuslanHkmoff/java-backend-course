@@ -17,7 +17,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 public class RateLimitInterceptor implements HandlerInterceptor {
-    public static final int NANO_TO_MIN = 1_000_000_000;
+    public static final int NANO_TO_SEC = 1_000_000_000;
     private final int rateLimit;
     private final int delay;
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
@@ -41,7 +41,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             response.addHeader("X-Rate-Limit-Remaining", String.valueOf(probe.getRemainingTokens()));
             return true;
         } else {
-            long waitForRefill = probe.getNanosToWaitForRefill() / NANO_TO_MIN;
+            long waitForRefill = probe.getNanosToWaitForRefill() / NANO_TO_SEC;
             response.addHeader("X-Rate-Limit-Retry-After-Seconds", String.valueOf(waitForRefill));
             response.sendError(HttpStatus.TOO_MANY_REQUESTS.value(), "Number of allowed requests exceeded");
             return false;

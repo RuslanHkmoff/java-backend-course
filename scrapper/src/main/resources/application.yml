@@ -9,7 +9,7 @@ app:
     bot: http://localhost:8090
   db-access-type: jooq
   retry-policy:
-    codes: 500
+    codes: [429, 500, 501, 502, 503, 504, 505, 506, 507]
     backoff: exponential
     limit: 3
     delay: 1000
@@ -22,7 +22,7 @@ spring:
     name: scrapper
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5437/scrapper
+    url: ${JDBC_URL}
     username: postgres
     password: postgres
   liquibase:
