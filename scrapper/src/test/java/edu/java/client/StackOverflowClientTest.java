@@ -2,9 +2,10 @@ package edu.java.client;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import edu.java.ScrapperApplication;
-import edu.java.response.stackoverflow.StackOverflowResponse;
 import edu.java.response.stackoverflow.QuestionResponse;
 import edu.java.response.stackoverflow.StackOverflowOwner;
+import edu.java.response.stackoverflow.StackOverflowResponse;
+import edu.java.scrapper.IntegrationTest;
 import edu.java.service.client.StackOverflowService;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = ScrapperApplication.class)
-public class StackOverflowClientTest {
+public class StackOverflowClientTest extends IntegrationTest {
     @Autowired
     StackOverflowService stackOverflowService;
     private WireMockServer wireMockServer;

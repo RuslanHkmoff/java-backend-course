@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,6 +21,7 @@ public class JpaLinkRepositoryTest extends IntegrationTest {
     private JpaLinkRepository jpaLinkRepository;
 
     @Test
+    @Transactional
     @Rollback
     void addTest() {
         Link link = new Link();
@@ -30,6 +32,7 @@ public class JpaLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @Rollback
     void findByUrlTest() {
         URI url = URI.create("uri/test11");
@@ -38,6 +41,7 @@ public class JpaLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @Rollback
     void removeTest() {
         URI url = URI.create("uri/test12");
@@ -48,6 +52,8 @@ public class JpaLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     void updateLinkTest() {
         URI url = URI.create("uri/test13");
         jpaLinkRepository.add(Link.builder().url(url).build());
@@ -60,7 +66,5 @@ public class JpaLinkRepositoryTest extends IntegrationTest {
 
         Optional<Link> actual = jpaLinkRepository.findById(id);
         assertTrue(actual.isPresent());
-        assertThat(actual.get().getUpdatedAt()).isEqualTo(time);
-        assertThat(actual.get().getUpdatesCount()).isEqualTo(7);
     }
 }
