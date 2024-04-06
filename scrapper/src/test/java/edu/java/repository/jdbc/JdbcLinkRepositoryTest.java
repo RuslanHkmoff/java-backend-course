@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,6 +21,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     private JdbcLinkRepository jdbcLinkRepository;
 
     @Test
+    @Transactional
     @Rollback
     void addTest() {
         Link link = new Link();
@@ -30,6 +32,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @Rollback
     void findByUrlTest() {
         URI url = URI.create("uri/test6");
@@ -38,6 +41,7 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
     @Rollback
     void removeTest() {
         URI url = URI.create("uri/test7");
@@ -48,6 +52,8 @@ public class JdbcLinkRepositoryTest extends IntegrationTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     void updateLinkTest() {
         URI url = URI.create("uri/test8");
         jdbcLinkRepository.add(Link.builder().url(url).build());

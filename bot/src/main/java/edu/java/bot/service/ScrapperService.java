@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +22,7 @@ public class ScrapperService {
     private static final String TG_URI = "tg-chat/%d";
 
     private final WebClient scrapperClient;
+    private final Retry retryStrategy;
 
     public Optional<LinkResponse> addLink(Long id, String link) {
         return scrapperClient
@@ -31,6 +33,7 @@ public class ScrapperService {
             .bodyToMono(LinkResponse.class)
             .doOnError(error -> log.error("Error while addLink, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
+            .retryWhen(retryStrategy)
             .blockOptional();
     }
 
@@ -42,6 +45,7 @@ public class ScrapperService {
             .bodyToMono(ListLinksResponse.class)
             .doOnError(error -> log.error("Error while getAllLinks, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
+            .retryWhen(retryStrategy)
             .blockOptional();
     }
 
@@ -54,6 +58,7 @@ public class ScrapperService {
             .bodyToMono(LinkResponse.class)
             .doOnError(error -> log.error("Error while deleteLink, {}", error.getMessage()))
             .onErrorResume((error) -> Mono.empty())
+            .retryWhen(retryStrategy)
             .blockOptional();
     }
 
@@ -64,6 +69,7 @@ public class ScrapperService {
             .retrieve()
             .toBodilessEntity()
             .doOnError(error -> log.error("Error while registerChat, {}", error.getMessage()))
+            .retryWhen(retryStrategy)
             .blockOptional()
             .isPresent();
     }
@@ -75,6 +81,7 @@ public class ScrapperService {
             .retrieve()
             .toBodilessEntity()
             .doOnError(error -> log.error("Error while deleteChat, {}", error.getMessage()))
+            .retryWhen(retryStrategy)
             .blockOptional()
             .isPresent();
     }

@@ -1,13 +1,21 @@
 app:
   scheduler:
     enable: true
-    interval: 100s
+    interval: 10000s
     force-check-delay: 100s
   base-url:
     github: https://api.github.com/repos/
     stackoverflow: https://api.stackexchange.com/2.3/questions/
     bot: http://localhost:8090
   db-access-type: jooq
+  retry-policy:
+    codes: [429, 500, 501, 502, 503, 504, 505, 506, 507]
+    backoff: exponential
+    limit: 3
+    delay: 1000
+  rate-limit:
+    limit: 100
+    delay: 5
 
 spring:
   application:
@@ -19,6 +27,12 @@ spring:
     password: postgres
   liquibase:
     enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
 
 server:
