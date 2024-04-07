@@ -3,11 +3,11 @@ package edu.java.configuration.database;
 import edu.java.repository.jooq.JooqChatRepository;
 import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.repository.jooq.JooqSubscriptionsRepository;
+import edu.java.sender.UpdateSender;
 import edu.java.service.ChatService;
 import edu.java.service.ChatServiceImpl;
 import edu.java.service.LinkService;
 import edu.java.service.LinkServiceImpl;
-import edu.java.service.client.BotService;
 import edu.java.service.client.GithubService;
 import edu.java.service.client.StackOverflowService;
 import edu.java.service.updates.BotUpdateService;
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("edu.java.repository.jooq")
 public class JooqAccessConfig {
 
-    public static final String INFO_MESSAGE = "Using jooq";
+    private static final String INFO_MESSAGE = "Using jooq";
 
     @Bean
     public LinkService linkService(
@@ -64,13 +64,13 @@ public class JooqAccessConfig {
 
     @Bean
     public BotUpdateService botUpdateService(
-        BotService botService,
+        UpdateSender updateSender,
         JooqLinkRepository jooqLinkRepository,
         JooqSubscriptionsRepository jooqSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new BotUpdateServiceImpl(
-            botService,
+            updateSender,
             jooqLinkRepository,
             jooqSubscriptionsRepository
         );

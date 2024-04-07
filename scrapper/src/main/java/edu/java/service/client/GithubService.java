@@ -22,7 +22,7 @@ public class GithubService {
             .uri(String.join("/", repoOwner, repoName))
             .retrieve()
             .bodyToMono(GithubResponse.class)
-            .doOnError(error -> log.error("Error has occurred {}", error.getMessage()))
-            .retryWhen(retryStrategy);
+            .doOnError(error -> log.error("Error has occurred {}", error.getMessage()));
+//            .retryWhen(retryStrategy);
     }
 }

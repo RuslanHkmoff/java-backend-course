@@ -29,8 +29,6 @@ public class ClientConfiguration {
     @Bean
     WebClient botClient() {
         return WebClient
-            .builder()
-            .baseUrl(config.baseUrl().bot())
-            .build();
+            .create(config.baseUrl().bot());
     }
 }

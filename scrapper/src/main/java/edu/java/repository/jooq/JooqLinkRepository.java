@@ -4,6 +4,7 @@ import edu.java.model.Link;
 import edu.java.repository.LinkRepository;
 import java.net.URI;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,7 @@ public class JooqLinkRepository implements LinkRepository {
         dsl.update(LINK)
             .set(LINK.UPDATED_AT, updateAt)
             .set(LINK.UPDATES_COUNT, updatesCount)
+            .set(LINK.VISITED_AT, OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC))
             .where(LINK.ID.eq(id))
             .execute();
     }

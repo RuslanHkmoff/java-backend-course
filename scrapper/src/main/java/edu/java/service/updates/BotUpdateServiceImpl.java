@@ -4,13 +4,14 @@ import edu.java.model.Chat;
 import edu.java.models.request.LinkUpdateRequest;
 import edu.java.repository.LinkRepository;
 import edu.java.repository.SubscriptionsRepository;
-import edu.java.service.client.BotService;
+import edu.java.sender.UpdateSender;
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class BotUpdateServiceImpl implements BotUpdateService {
-    private final BotService botService;
+    private final UpdateSender updateSender;
     private final LinkRepository linkRepository;
     private final SubscriptionsRepository subscriptionRepository;
 
@@ -18,8 +19,17 @@ public class BotUpdateServiceImpl implements BotUpdateService {
     public void sendUpdates(List<LinkUpdateDto> updatedLinks) {
         updatedLinks.forEach(dto -> {
             List<Long> chatIds = getChatIds(dto);
-            botService.sendUpdate(new LinkUpdateRequest(1L, dto.url().toString(), dto.description(), chatIds));
+            updateSender.sendUpdate(new LinkUpdateRequest(
+                getLinkId(dto.url()),
+                dto.url().toString(),
+                dto.description(),
+                chatIds
+            ));
         });
+    }
+
+    private Long getLinkId(URI url) {
+        return linkRepository.findByUrl(url).orElseThrow().getId();
     }
 
     private List<Long> getChatIds(LinkUpdateDto update) {

@@ -3,11 +3,11 @@ package edu.java.configuration.database;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.repository.jpa.JpaSubscriptionsRepository;
+import edu.java.sender.UpdateSender;
 import edu.java.service.ChatService;
 import edu.java.service.ChatServiceImpl;
 import edu.java.service.LinkService;
 import edu.java.service.LinkServiceImpl;
-import edu.java.service.client.BotService;
 import edu.java.service.client.GithubService;
 import edu.java.service.client.StackOverflowService;
 import edu.java.service.updates.BotUpdateService;
@@ -61,13 +61,13 @@ public class JpaAccessConfig {
 
     @Bean
     public BotUpdateService botUpdateService(
-        BotService botService,
+        UpdateSender updateSender,
         JpaLinkRepository jpaLinkRepository,
         JpaSubscriptionsRepository jpaSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new BotUpdateServiceImpl(
-            botService,
+            updateSender,
             jpaLinkRepository,
             jpaSubscriptionsRepository
         );

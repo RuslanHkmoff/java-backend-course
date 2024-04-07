@@ -20,7 +20,7 @@ public final class SqlQueries {
     public static final String DELETE_LINK_QUERY =
         "DELETE FROM link WHERE id = ?";
     public static final String UPDATE_LINK_QUERY =
-        "UPDATE link SET updated_at = ?, updates_count = ? WHERE id = ?";
+        "UPDATE link SET updated_at = ?, updates_count = ?, visited_at = DEFAULT WHERE id = ?";
     public static final String FIND_LAST_VISITED_LINKS_QUERY = """
         SELECT id, url, visited_at, updated_at, updates_count
         FROM link
