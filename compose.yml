@@ -27,7 +27,6 @@ services:
     networks:
       - backend
 
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
     environment:
@@ -36,8 +35,7 @@ services:
     ports:
       - 22181:2181
     volumes:
-      - ./zookeeper:/var/lib/zookeeper/data
-      - ./zookeeper:/var/lib/zookeeper/log
+      - zookeeper:/var/lib/zookeeper/data
 
   kafka:
     image: confluentinc/cp-kafka:7.4.4
@@ -53,7 +51,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
-      - ./kafka:/var/lib/kafka/data
+      - kafka:/var/lib/kafka/data
 
   init-kafka:
     image: confluentinc/cp-kafka:7.4.4
@@ -64,12 +62,14 @@ services:
       "
       echo -e 'Creating kafka topics ...'
       kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic messages.scrapper --replication-factor 1 --partitions 1
-      kafka
+      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic messages.scrapper_dlq --replication-factor 1 --partitions 1
       "
+
 
 volumes:
   postgresql: { }
   kafka: { }
+  zookeeper: { }
 
 networks:
   backend: { }

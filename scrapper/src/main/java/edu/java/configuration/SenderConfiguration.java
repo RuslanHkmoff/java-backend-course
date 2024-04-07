@@ -1,7 +1,5 @@
-package edu.java.configuration.database;
+package edu.java.configuration;
 
-import edu.java.configuration.ApplicationConfig;
-import edu.java.models.request.LinkUpdateRequest;
 import edu.java.sender.HttpUpdateSender;
 import edu.java.sender.KafkaUpdateSender;
 import edu.java.sender.UpdateSender;
@@ -25,11 +23,8 @@ public class SenderConfiguration {
 
     @ConditionalOnProperty(value = "app.sender-type", havingValue = "kafka")
     @Bean
-    public UpdateSender kafkaUpdateSender(
-        ApplicationConfig applicationConfig,
-        KafkaTemplate<String, LinkUpdateRequest> updateProducer
-    ) {
+    public UpdateSender kafkaUpdateSender(KafkaTemplate<String, String> updateProducer) {
         log.info("Using kafka");
-        return new KafkaUpdateSender(updateProducer, applicationConfig.topic().name());
+        return new KafkaUpdateSender(updateProducer);
     }
 }

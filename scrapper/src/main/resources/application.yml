@@ -8,7 +8,7 @@ app:
     stackoverflow: https://api.stackexchange.com/2.3/questions/
     bot: http://localhost:8090
 
-  db-access-type: jooq
+  db-access-type: jdbc
 
   retry-policy:
     codes: [ 429, 500, 501, 502, 503, 504, 505, 506, 507 ]
@@ -21,22 +21,6 @@ app:
     delay: 5
 
   sender-type: kafka
-
-  kafka:
-    bootstrapServers: localhost:29092
-    clientId: scrapper
-    askMode: all
-    deliveryTimeout: 60s
-    lingerMs: 12_000
-    batchSize: 100_000
-    maxInFlightPerConnection: 5
-    enableIdempotence: true
-  topic:
-    name: scrapper
-    partitions: 1
-    replicas: 1
-
-
 
 spring:
   application:
@@ -54,6 +38,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    bootstrapServers: localhost:29092
+
 
 
 server:
