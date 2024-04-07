@@ -23,6 +23,7 @@ public class LinkUpdateScheduler {
     public void update() {
         List<LinkUpdateDto> updatedLinks = linkUpdatesService.getUpdatedLink(BATCH_SIZE);
         if (!updatedLinks.isEmpty()) {
+            log.info("[Scheduler]: send updates");
             botUpdateService.sendUpdates(updatedLinks);
         }
     }
