@@ -16,10 +16,13 @@ public record ApplicationConfig(
     @NotNull
     Scheduler scheduler,
     String dbAccessType,
+    String senderType,
     @NotNull
     RetryPolicy retryPolicy,
     @NotNull
-    RateLimit rateLimit
+    RateLimit rateLimit,
+    Kafka kafka,
+    Topic topic
 ) {
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
@@ -31,5 +34,25 @@ public record ApplicationConfig(
     }
 
     public record RateLimit(int limit, int delay) {
+    }
+
+    public record Kafka(
+        String bootstrapServers,
+        String clientId,
+        String askMode,
+        Duration deliveryTimeout,
+        Integer lingerMs,
+        Integer batchSize,
+        Integer maxInFlightPerConnection,
+        Boolean enableIdempotence,
+        Topic topic
+    ) {
+    }
+
+    public record Topic(
+        String name,
+        Integer partitions,
+        Integer replicas
+    ) {
     }
 }
