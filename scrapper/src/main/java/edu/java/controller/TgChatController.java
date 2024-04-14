@@ -2,6 +2,7 @@ package edu.java.controller;
 
 import edu.java.models.response.ApiErrorResponse;
 import edu.java.service.ChatService;
+import io.micrometer.core.instrument.Counter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class TgChatController {
     private final ChatService chatService;
+    private final Counter messageCounter;
 
     @Operation(
         operationId = "tgChatIdDelete",
@@ -39,6 +41,7 @@ public class TgChatController {
     @DeleteMapping(value = "/tg-chat/{id}", produces = "application/json")
     public void deleteChat(@PathVariable @Positive Long id) {
         log.info("Remove chat, with id: {}", id);
+        messageCounter.increment();
         chatService.unregister(id);
     }
 
@@ -55,6 +58,7 @@ public class TgChatController {
     @PostMapping(value = "/tg-chat/{id}", produces = "application/json")
     public void registerChat(@PathVariable @Positive Long id) {
         log.info("Register chat, with id: {}", id);
+        messageCounter.increment();
         chatService.register(id);
     }
 }
