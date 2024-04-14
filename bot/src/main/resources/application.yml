@@ -22,6 +22,35 @@ spring:
       spring.deserializer.value.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
     bootstrapServers: localhost:29092
 
+management:
+  endpoints:
+    web:
+      base-path: /
+      path-mapping:
+        info: info
+        health: health
+        prometheus: metrics
+      exposure:
+        include: "health,info,prometheus"
+    jmx:
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+  server:
+    port: 8093
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 server:
   port: 8090
