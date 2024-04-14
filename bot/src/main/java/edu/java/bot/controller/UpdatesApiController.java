@@ -10,13 +10,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @Validated
 @Tag(name = "updates", description = "the updates API")
 @RequiredArgsConstructor
@@ -39,12 +38,7 @@ public class UpdatesApiController {
             })
         }
     )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/updates",
-        produces = {"application/json"},
-        consumes = {"application/json"}
-    )
+    @PostMapping("/updates")
     public void updatesPost(@RequestBody @Valid LinkUpdateRequest linkUpdate) {
         alertService.sendAlert(linkUpdate);
     }

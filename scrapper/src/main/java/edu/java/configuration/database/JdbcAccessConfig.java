@@ -3,11 +3,11 @@ package edu.java.configuration.database;
 import edu.java.repository.jdbc.JdbcChatRepository;
 import edu.java.repository.jdbc.JdbcLinkRepository;
 import edu.java.repository.jdbc.JdbcSubscriptionRepository;
+import edu.java.sender.UpdateSender;
 import edu.java.service.ChatService;
 import edu.java.service.ChatServiceImpl;
 import edu.java.service.LinkService;
 import edu.java.service.LinkServiceImpl;
-import edu.java.service.client.BotService;
 import edu.java.service.client.GithubService;
 import edu.java.service.client.StackOverflowService;
 import edu.java.service.updates.BotUpdateService;
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class JdbcAccessConfig {
 
-    public static final String INFO_MESSAGE = "Using Jdbc";
+    private static final String INFO_MESSAGE = "Using Jdbc";
 
     @Bean
     public LinkService linkService(
@@ -62,13 +62,13 @@ public class JdbcAccessConfig {
 
     @Bean
     public BotUpdateService botUpdateService(
-        BotService botService,
+        UpdateSender updateSender,
         JdbcLinkRepository jdbcLinkRepository,
         JdbcSubscriptionRepository jdbcSubscriptionsRepository
     ) {
         log.info(INFO_MESSAGE);
         return new BotUpdateServiceImpl(
-            botService,
+            updateSender,
             jdbcLinkRepository,
             jdbcSubscriptionsRepository
         );

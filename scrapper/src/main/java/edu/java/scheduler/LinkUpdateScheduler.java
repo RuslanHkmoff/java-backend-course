@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @EnableScheduling
 @RequiredArgsConstructor
 public class LinkUpdateScheduler {
-    public static final int BATCH_SIZE = 10;
+    private static final int BATCH_SIZE = 10;
     private final LinkUpdatesService linkUpdatesService;
     private final BotUpdateService botUpdateService;
 
@@ -23,6 +23,7 @@ public class LinkUpdateScheduler {
     public void update() {
         List<LinkUpdateDto> updatedLinks = linkUpdatesService.getUpdatedLink(BATCH_SIZE);
         if (!updatedLinks.isEmpty()) {
+            log.info("[Scheduler]: send updates");
             botUpdateService.sendUpdates(updatedLinks);
         }
     }

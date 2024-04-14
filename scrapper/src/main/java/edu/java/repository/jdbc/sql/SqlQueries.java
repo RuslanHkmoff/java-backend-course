@@ -20,7 +20,7 @@ public final class SqlQueries {
     public static final String DELETE_LINK_QUERY =
         "DELETE FROM link WHERE id = ?";
     public static final String UPDATE_LINK_QUERY =
-        "UPDATE link SET updated_at = ?, updates_count = ? WHERE id = ?";
+        "UPDATE link SET updated_at = ?, updates_count = ?, visited_at = DEFAULT WHERE id = ?";
     public static final String FIND_LAST_VISITED_LINKS_QUERY = """
         SELECT id, url, visited_at, updated_at, updates_count
         FROM link
@@ -31,7 +31,7 @@ public final class SqlQueries {
         "INSERT INTO subscriptions (chat_id, link_id) VALUES (?, ?)";
     public static final String FIND_CHATS_BY_LINK_QUERY = """
         SELECT c.id, c.created_at FROM chat c
-        JOIN subscriptions s ON c.id = s.link_id
+        JOIN subscriptions s ON c.id = s.chat_id
         WHERE s.link_id = ?
         """;
     public static final String FIND_LINKS_BY_CHAT_QUERY = """
