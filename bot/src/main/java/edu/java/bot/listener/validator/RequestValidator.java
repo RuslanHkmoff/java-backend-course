@@ -24,23 +24,23 @@ public class RequestValidator {
             throw new InvalidMessageException();
         }
         String[] split = url.substring(PROTOCOL.length()).split("/");
-        if (!isValidGithubLink(split) && !isValidSofLink(split)) {
+        if (isInvalidGithubLink(split) && isInvalidSofLink(split)) {
             throw new InvalidMessageException();
         }
     }
 
-    private static boolean isValidSofLink(String[] split) {
-        if (SOF_PREFIX.equals(split[0])) {
-            return "questions".equals(split[1]) && split.length == SOF_PARAMETERS_LEN;
+    private static boolean isInvalidSofLink(String[] split) {
+        if (!SOF_PREFIX.equals(split[0])) {
+            return false;
         }
-        return false;
+        return !("questions".equals(split[1]) && split.length == SOF_PARAMETERS_LEN);
     }
 
-    private static boolean isValidGithubLink(String[] split) {
+    private static boolean isInvalidGithubLink(String[] split) {
         if (!GITHUB_PREFIX.equals(split[0])) {
             return false;
         }
-        return split.length == GITHUB_PARAMETERS_LEN;
+        return !(split.length == GITHUB_PARAMETERS_LEN);
     }
 }
 

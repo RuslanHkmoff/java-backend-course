@@ -1,6 +1,7 @@
 package edu.java.bot.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.java.bot.listener.validator.RequestValidator;
 import edu.java.bot.service.AlertService;
 import edu.java.models.request.LinkUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class LinkUpdateListener {
         log.info("Received message from kafka: {}", message);
         LinkUpdateRequest updateRequest = OBJECT_MAPPER.readValue(message, LinkUpdateRequest.class);
         try {
+            RequestValidator.isValidRequestOrElseThrow(updateRequest);
             alertService.sendAlert(updateRequest);
         } catch (Exception e) {
             log.info("Invalid update, send to dlq");
