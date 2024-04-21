@@ -47,10 +47,6 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public List<Link> getAll(long chatId) {
         isChatExistsOrElseThrow(chatId);
-//        List<Long> linksId = subscriptionRepository.findLinksByChat(chatId);
-//        return linksId.stream()
-//            .map(id -> linkRepository.findById(id).orElseThrow())
-//            .toList();
         return subscriptionRepository.findLinksByChat(chatId);
     }
 
