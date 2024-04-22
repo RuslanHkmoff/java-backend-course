@@ -37,13 +37,20 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: build bot image
-        run: docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} -f bot.Dockerfile .
-        working-directory: ${{ github.workspace }}/bot
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
 
-      - name: push image
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ${{ github.workspace }}/bot/bot.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - id: jacoco
         uses: madrapps/jacoco-report@v1.6.1
