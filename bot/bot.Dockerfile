@@ -2,7 +2,7 @@ FROM openjdk:latest
 
 WORKDIR /app
 
-COPY target/bot.jar /app
+COPY target/bot.jar /app/bot.jar
 
 EXPOSE 8090
 EXPOSE 8091

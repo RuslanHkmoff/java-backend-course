@@ -2,7 +2,7 @@ FROM openjdk:latest
 
 WORKDIR /app
 
-COPY scrapper/target/scrapper.jar.jar /app
+COPY target/scrapper.jar /app/scrapper.jar
 
 EXPOSE 8080
 EXPOSE 8081
