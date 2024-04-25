@@ -7,6 +7,7 @@ import edu.java.models.response.ApiErrorResponse;
 import edu.java.models.response.LinkResponse;
 import edu.java.models.response.ListLinksResponse;
 import edu.java.service.LinkService;
+import io.micrometer.core.instrument.Counter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LinksController {
     private final LinkService linkService;
+    private final Counter messageCounter;
 
     @Operation(
         operationId = "linksDelete",
@@ -54,6 +56,7 @@ public class LinksController {
     ) {
         log.info("Delete link: {}, from chat: {}", request, id);
         Link removed = linkService.remove(id, URI.create(request.url()));
+        messageCounter.increment();
         return convertLink(removed);
     }
 
@@ -74,6 +77,7 @@ public class LinksController {
     public ListLinksResponse getLinks(@PathVariable @Positive Long id) {
         log.info("Get all links from chat: {}", id);
         List<Link> links = linkService.getAll(id);
+        messageCounter.increment();
         return new ListLinksResponse(
             links
                 .stream()

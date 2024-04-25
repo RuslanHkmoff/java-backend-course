@@ -20,7 +20,7 @@ app:
     limit: 100
     delay: 5
 
-  sender-type: kafka
+  sender-type: http
 
 spring:
   application:
@@ -44,7 +44,35 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     bootstrapServers: localhost:29092
 
-
+management:
+  endpoints:
+    web:
+      base-path: /
+      path-mapping:
+        info: info
+        health: health
+        prometheus: metrics
+      exposure:
+        include: "health,info,prometheus"
+    jmx:
+      exposure:
+        include: "health,info,prometheus"
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+    prometheus:
+      enabled: true
+  server:
+    port: 8083
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 server:
   port: 8080

@@ -9,6 +9,7 @@ import com.pengrad.telegrambot.response.BaseResponse;
 import com.pengrad.telegrambot.response.SendResponse;
 import edu.java.bot.configuration.ApplicationConfig;
 import edu.java.bot.service.LinkTrackerBotService;
+import io.micrometer.core.instrument.Counter;
 import java.io.IOException;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
@@ -19,14 +20,16 @@ import org.springframework.stereotype.Component;
 public class LinkTrackerBot implements Bot {
     private static final Logger LOGGER = LogManager.getLogger(LinkTrackerBot.class);
     private final TelegramBot bot;
+    private final Counter messageCounter;
     private final LinkTrackerBotService botService;
 
     public LinkTrackerBot(
         LinkTrackerBotService linkTrackerBotService,
-        ApplicationConfig applicationConfig
+        ApplicationConfig applicationConfig, Counter messageCounter
     ) {
         this.botService = linkTrackerBotService;
         this.bot = new TelegramBot(applicationConfig.telegramToken());
+        this.messageCounter = messageCounter;
         start();
     }
 
@@ -39,6 +42,7 @@ public class LinkTrackerBot implements Bot {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             if (update.message() != null && update.message().text() != null) {
+                messageCounter.increment();
                 bot.execute(botService.handleUpdate(update), new Callback<SendMessage, SendResponse>() {
                     @Override
                     public void onResponse(SendMessage request, SendResponse response) {
